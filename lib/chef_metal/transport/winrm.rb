@@ -23,7 +23,7 @@ module ChefMetal
             stream_chunk(execute_options, stdout, stderr)
           end
         end
-        WinRMResult.new(command, execute_options, config, output)
+        WinRMResult.new(command, execute_options,  @config, output)
       end
 
       def read_file(path)
