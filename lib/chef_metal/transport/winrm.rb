@@ -69,6 +69,18 @@ $file.Close
         false
       end
 
+      def make_url_available_to_remote(local_url)
+        uri = URI(local_url)
+        host = Socket.getaddrinfo(uri.host, uri.scheme, nil, :STREAM)[0][3]
+        if host == '127.0.0.1' || host == '[::1]'
+          unless session.forward.active_remotes.any? { |port, bind| port == uri.port && bind == '127.0.0.1' }
+            msg = "Error: the winrm transport does not support port forwarding.\n"
+            raise msg
+          end
+        end
+        local_url
+      end
+
       def escape(string)
         "'#{string.gsub("'", "''")}'"
       end
