@@ -61,6 +61,14 @@ $file.Close
         #
       end
 
+      def available?
+        execute('pwd', :timeout => 10)
+        true
+      rescue Timeout::Error, Errno::EHOSTUNREACH, Errno::ETIMEDOUT, Errno::ECONNREFUSED, Errno::ECONNRESET
+        Chef::Log.debug("#{@options[:user]}@#{@endpoint} unavailable: could not execute 'cd' on #{@endpoint}: #{$!.inspect}")
+        false
+      end
+
       def escape(string)
         "'#{string.gsub("'", "''")}'"
       end
