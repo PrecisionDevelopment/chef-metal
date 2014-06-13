@@ -34,7 +34,7 @@ module ChefMetal
           # Limiter is we don't know how to efficiently upload large files to
           # the remote machine with WMI.
           machine.execute(action_handler, "(New-Object System.Net.WebClient).DownloadFile(#{machine.escape(install_msi_url)}, #{machine.escape(install_msi_path)})", :timeout => @chef_client_timeout)
-          machine.execute(action_handler, "msiexec /qn /i #{machine.escape(install_msi_path)}")
+          machine.execute(action_handler, "msiexec /qn /i #{machine.escape(install_msi_path)}", :timeout => @chef_client_timeout)
         end
       end
 
