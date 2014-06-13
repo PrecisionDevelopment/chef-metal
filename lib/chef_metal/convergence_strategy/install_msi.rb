@@ -9,7 +9,7 @@ module ChefMetal
       def initialize(convergence_options, config)
         super
         @install_msi_url = convergence_options[:install_msi_url] || 'http://www.opscode.com/chef/install.msi'
-        @install_msi_path = convergence_options[:install_msi_path] || "%TEMP%\\#{File.basename(@install_msi_url)}"
+        @install_msi_path = convergence_options[:install_msi_path] || "c:\\#{File.basename(@install_msi_url)}"
         @chef_client_timeout = convergence_options.has_key?(:chef_client_timeout) ? convergence_options[:chef_client_timeout] : 120*60 # Default: 2 hours
       end
 
@@ -33,7 +33,7 @@ module ChefMetal
           # TODO find a way to cache this on the host like with the Unix stuff.
           # Limiter is we don't know how to efficiently upload large files to
           # the remote machine with WMI.
-          machine.execute(action_handler, "(New-Object System.Net.WebClient).DownloadFile(#{machine.escape(install_msi_url)}, #{machine.escape(install_msi_path)})")
+          machine.execute(action_handler, "(New-Object System.Net.WebClient).DownloadFile(#{machine.escape(install_msi_url)}, #{machine.escape(install_msi_path)})", :timeout => @chef_client_timeout)
           machine.execute(action_handler, "msiexec /qn /i #{machine.escape(install_msi_path)}")
         end
       end

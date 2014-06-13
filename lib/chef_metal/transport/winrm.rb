@@ -118,8 +118,8 @@ $file.Close
         def error!
           if exitstatus != 0
             msg = "Error: command '#{command}' exited with code #{exitstatus}.\n"
-            msg << "STDOUT: #{stdout}" if !options[:stream] && !options[:stream_stdout] && config[:log_level] != :debug
-            msg << "STDERR: #{stderr}" if !options[:stream] && !options[:stream_stderr] && config[:log_level] != :debug
+            msg << "STDOUT: #{stdout}" if !options[:stream] && !options[:stream_stdout] #&& config[:log_level] != :debug
+            msg << "STDERR: #{stderr}" if !options[:stream] && !options[:stream_stderr] #&& config[:log_level] != :debug
             raise msg
           end
         end
