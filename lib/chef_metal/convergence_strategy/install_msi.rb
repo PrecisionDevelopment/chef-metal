@@ -10,7 +10,7 @@ module ChefMetal
         super
         @install_msi_url = convergence_options[:install_msi_url] || 'http://www.opscode.com/chef/install.msi'
         @install_msi_path = convergence_options[:install_msi_path] || "c:\\#{File.basename(@install_msi_url)}"
-        @chef_client_timeout = convergence_options.has_key?(:chef_client_timeout) ? convergence_options[:chef_client_timeout] : 120*60 # Default: 2 hours
+        @chef_client_timeout = convergence_options.has_key?(:chef_client_timeout) ? convergence_options[:chef_client_timeout] : 120*60*1000 # Default: 2 hours
       end
 
       attr_reader :install_msi_url
