@@ -44,7 +44,9 @@ module ChefMetal
         # TODO For some reason I get a 500 back if I don't do -l debug
         action_handler.open_stream(machine.node['name']) do |stdout|
           action_handler.open_stream(machine.node['name']) do |stderr|
-            machine.execute(action_handler, "chef-client",
+            command_line = "chef-client"
+            command_line << " -l #{config[:log_level].to_s}" if config[:log_level]
+            machine.execute(action_handler, command_line,
               :stream_stdout => stdout,
               :stream_stderr => stderr,
               :timeout => @chef_client_timeout)
