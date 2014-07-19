@@ -13,6 +13,13 @@ Date       | Blog
 3/4/2014   | [Chef Metal 0.2: Overview](http://www.getchef.com/blog/2014/03/04/chef-metal-0-2-release/) - this is a pretty good overview (though dated).
 12/20/2013 | [Chef Metal Alpha](http://www.getchef.com/blog/2013/12/20/chef-metal-alpha/)
 
+Documentation
+-------------
+* [Configuration](https://github.com/opscode/chef-metal/blob/master/docs/configuration.md#configuring-and-using-metal-drivers)
+* [Writing Drivers](https://github.com/opscode/chef-metal/blob/master/docs/building_drivers.md#writing-drivers)
+* [Embedding](https://github.com/opscode/chef-metal/blob/master/docs/embedding.md)
+* [Providers](https://github.com/opscode/chef-metal/blob/master/docs/providers)
+
 Try It Out
 ----------
 
@@ -218,16 +225,32 @@ with_chef_server "https://chef-server.example.org",
   :signing_key_filename => Chef::Config[:client_key]
 ```
 
+**Note for Hosted/Enterprise Chef Servers**
+
+Currently, you will need to add the 'clients' group to the 'admin' group in order for machine provisioning to work:
+
+```
+knife edit /groups/admin.json -e <editor>
+```
+Then add:
+```
+{
+  "users": [
+    "pivotal" # This is an internal superuser for Hosted/Enterprise Chef
+  ],
+  "groups": [
+    "clients" # This is what you need to add
+  ]
+}
+```
+
+This can also be done through the Chef Server web UI (Administration tab > Groups > select admins Group > Add 'clients'
+
+
 Kitchen
 -------
 
 Chef Metal also works with Test Kitchen, allowing you to test entire clusters, not just machines!  The repository for the kitchen-metal gem is https://github.com/doubt72/kitchen-metal.
-
-Documentation
--------------
-* [Configuration](https://github.com/opscode/chef-metal/blob/master/docs/configuration.md#configuring-and-using-metal-drivers)
-* [Writing Drivers](https://github.com/opscode/chef-metal/blob/master/docs/building_drivers.md#writing-drivers)
-* [Embedding](https://github.com/opscode/chef-metal/blob/master/docs/embedding.md)
 
 Bugs and The Plan
 -----------------
