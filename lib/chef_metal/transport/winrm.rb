@@ -18,7 +18,8 @@ module ChefMetal
       attr_reader :config
 
       def execute(command, execute_options = {})
-        session.set_timeout(execute_options[:timeout]) if execute_options[:timeout]
+        timeout = @chef_client_timeout = execute_options.has_key?(:timeout) ? execute_options[:timeout] : 10*60
+        session.set_timeout(timeout)
         output = with_execute_timeout(execute_options) do
           session.run_powershell_script(command) do |stdout, stderr|
             stream_chunk(execute_options, stdout, stderr)
